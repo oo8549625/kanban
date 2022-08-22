@@ -1,0 +1,14 @@
+extends layout
+
+block main
+    div(class="h-screen")
+        div(class="flex flex-col bg-white")
+            div(class="shrink-0 flex justify-between items-center h-20 border-gray-200 border-b-2")
+                div(class="flex-1 min-w-0")
+                    a(href="/" class="flex items-center ml-4")
+                        img(class="w-12 h-12" src="/images/logo.svg")
+                        span(class="ml-1 flex-shrink-0 text-xl font-semibold text-gray-800") My Work
+                div(class="shrink-0")
+                    a(href="/login" class="mr-4 py-2 px-4 text-white text-lg font-medium rounded-full bg-blue-500 hover:bg-blue-600") Login
+            div(class="flex-1 overflow-auto")
+                block content

@@ -1,0 +1,342 @@
+extends layout
+
+block main
+    div(class="h-screen flex")
+        div(id="sidebar" class="-translate-x-full bg-white fixed inset-y-0 left-0 z-30 w-64 px-8 py-3 overflow-auto border-r rounded-md shadow lg:static lg:inset-auto lg:translate-x-0")
+            div
+                a(href=`${baseUrl}` class="flex items-center")
+                    img(class="w-12 h-12" src="/images/logo.svg")
+                    span(class="ml-1 flex-shrink-0 text-xl font-semibold text-gray-800") My Work
+                button(class="close lg:hidden absolute top-3 right-3")
+                    svg(class="h-4 w-4 text-gray-400" fill="currentColor" viewbox='0 0 24 24')
+                        path(d='M-.5-.5h3a57.45 57.45 0 0 0 9 9 57.45 57.45 0 0 0 9-9h3v3a57.45 57.45 0 0 0-9 9 57.45 57.45 0 0 0 9 9v3h-3a57.45 57.45 0 0 0-9-9 57.45 57.45 0 0 0-9 9h-3v-3a57.45 57.45 0 0 0 9-9 57.45 57.45 0 0 0-9-9v-3Z')
+            nav(class="mt-8")
+                h2(class="text-xs text-gray-600 font-semibold uppercase tracking-wide") Workspace
+                div(class="mt-2 -mx-3")
+                    each board in boards
+                        if(selectBoard == board)
+                            a(href=`${baseUrl}/${userId}/${board}` class="flex justify-between items-center mt-1 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-300")
+                                span(class="text-sm font-medium text-gray-700")= board
+                        else
+                            a(href=`${baseUrl}/${userId}/${board}` class="flex justify-between items-center mt-1 px-3 py-2 rounded-lg hover:bg-gray-200")
+                                span(class="text-sm font-medium text-gray-700")= board
+            button(class="-ml-1 mt-2 flex items-center text-sm font-medium text-gray-600 hover:bg-gray-200")
+                svg(class="h-6 w-6 text-gray-400" viewBox="0 0 24 24" fill="none")
+                    path(style="stroke:currentColor;stroke-width:2;stroke-linecap:round" d="M12 7v10m5-5H7")
+                span(class="ml-1") New Board
+        div(class="flex-1 flex flex-col min-w-0 bg-white")
+            div(class="flex-shrink-0 h-32 border-b-2 border-gray-200")
+                header(class="px-6")
+                    div(class="flex justify-between items-center py-3 border-b border-gray-200")
+                        div(class="flex-1 flex min-w-0")
+                            button(class="menu lg:hidden hover:bg-gray-100") 
+                                svg(class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" fill="currentColor")
+                                    path(d='M0 0h24v24H0z' fill='none')
+                                    path(d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z')
+                            div(class="shrink ml-3 relative w-64 lg:ml-0")
+                                span(class="absolute inset-y-0 left-0 pl-2 flex items-center")
+                                    svg(class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" fill="currentColor")
+                                        path(d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0a4.5 4.5 0 1 1-.01-8.99A4.5 4.5 0 0 1 9.5 14z")
+                                        path(d="M0 0h24v24H0z" fill="none")
+                                input(class="block w-full rounded-md border border-gray-400 pl-10 pr-4 py-1 text-gray-900 placeholder-gray-600" placeholder="Search")
+                        div(class="flex-shrink-0")
+                            button(class="ml-6")
+                                img(class="h-9 w-9 rounded-full object-cover" src="/images/user_profile.jpg" alt="Your profile image")
+                    div(class="flex items-center justify-between py-2")
+                        div 
+                            h2(class="text-2xl font-semibold text-gray-900 leading-tight") All Tasks
+                        div(class="flex")
+                            button(class="new-task ml-5 flex items-center pl-2 px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-md")
+                                svg(class="h-5 w-5" viewBox="0 0 24 24" fill="none")
+                                    path(style="stroke:currentColor;stroke-width:2;stroke-linecap:round" d="M12 7v10m5-5H7")
+                                span(class="ml-1") New Task
+            div(class="flex-1 overflow-x-auto")
+                main(class="p-3 inline-flex h-full")
+                    div(class="column-board m-2 flex-shrink-0 w-80 rounded-md flex flex-col border-2")
+                        div(class="portlet-header border-b-2 flex-shrink-0 rounded-md shadow bg-white p-2")
+                            section(class="ml-2")
+                                header(class="flex items-center justify-between")
+                                    div
+                                        h3(class="text-sm font-semibold text-gray-600") TO DO
+                                    div 
+                                        button(class="p-1 text-sm font-medium text-gray-400 rounded-md hover:bg-gray-200")
+                                            svg(class="h-5 w-5" viewBox="0 0 24 24" fill="none")
+                                                path(style="stroke:currentColor;stroke-width:2;stroke-linecap:round" d="M12 7v10m5-5H7")
+                        div(class="mt-2 flex-1 overflow-y-auto")
+                            ul(class="board h-full pt-2 pb-3 px-3")
+                                li(class="mt-3")
+                                    a(class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div
+                                            span(id="task-text1" class="task-component cursor-text rounded-md px-1 py-1 text-gray-900 text-sm font-medium hover:outline hover:outline-offset-2 hover:outline-1 hover:outline-gray-400") task1
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 2
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 3
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request                                    
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 4
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 5
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 6
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request  
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 7
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 8
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 9
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request                                    
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 10
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 11
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 12
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request  
+                    div(class="column-board m-2 flex-shrink-0 w-80 rounded-md flex flex-col border-2")
+                        div(class="portlet-header border-b-2 flex-shrink-0 rounded-md shadow bg-white p-2")
+                            section(class="ml-2")
+                                header(class="flex items-center justify-between")
+                                    div
+                                        h3(class="text-sm font-semibold text-gray-600") TO DO
+                                    div 
+                                        button(class="p-1 text-sm font-medium text-gray-400 rounded-md hover:bg-gray-200")
+                                            svg(class="h-5 w-5" viewBox="0 0 24 24" fill="none")
+                                                path(style="stroke:currentColor;stroke-width:2;stroke-linecap:round" d="M12 7v10m5-5H7")
+                        div(class="mt-2 flex-1 overflow-y-auto")
+                            ul(class="board h-full pt-2 pb-3 px-3")
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            span(class="block w-full rounded-md border border-gray-400 pl-1 py-1 text-gray-900 text-sm font-medium") test
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 2
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 3
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request                                    
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 4
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 5
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 6
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request  
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 7
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 8
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 9
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request                                    
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 10
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 11
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request
+                                li(class="mt-3")
+                                    a(href="#" class="block bg-white p-5 rounded-md shadow-md cursor-grabbing")
+                                        div(class="flex justify-between")
+                                            p(class="text-sm font-medium text-gray-900") complate ui interface 12
+                                        div(class="flex justify-between items-baseline")
+                                            div(class="text-sm text-gray-600") Sep 14
+                                            div(class="mt-2")
+                                                span(class="px-2 py-1 inline-flex items-center rounded bg-teal-100")
+                                                    svg(class="h-2 w-2 text-teal-500 " viewBox="0 0 8 8" fill="currentColor")
+                                                        circle(cx='4' cy='4' r='3')
+                                                    span(class="ml-2 leading-tight text-sm font-medium text-teal-900") Feature Request  
