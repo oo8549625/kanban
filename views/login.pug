@@ -1,33 +1,32 @@
-extends index
+extends layout
 
-block content
-    div(class="h-full flex justify-center items-center")
-        button(id="close-login-page" class="absolute top-5 right-5 lg:hidden")
-            svg(class="h-4 w-4 text-gray-400" fill="currentColor" viewbox='0 0 24 24')
-                path(d='M-.5-.5h3a57.45 57.45 0 0 0 9 9 57.45 57.45 0 0 0 9-9h3v3a57.45 57.45 0 0 0-9 9 57.45 57.45 0 0 0 9 9v3h-3a57.45 57.45 0 0 0-9-9 57.45 57.45 0 0 0-9 9h-3v-3a57.45 57.45 0 0 0 9-9 57.45 57.45 0 0 0-9-9v-3Z')
-        div(class="w-120 flex flex-col p-12 text-left border border-gray-300 rounded-lg")
-            div
-                h1(class="text-3xl font-semibold") Log in
-            div
-                form
-                    div(class="flex flex-col")
-                        div(class="flex justify-between items-end pt-6")
-                            label(for="email") Email
-                            span Need an account?
-                                a(href="#" class="ml-2 text-blue-500 hover:text-blue-600") Sign up
-                        div
-                            input(type="text" class="w-full rounded text-md font-medium text-gray-900 p-3 border border-gray-200 focus:outline-solid focus:outline-cyan-500 focus:outline-offset-2")
-                    div 
-                        div(class="flex justify-between items-end pt-6")
-                            label(for="password") Password
-                            span(class="flex")
-                                span test
-                                | show 
+block main
+    div(class="h-screen")
+        div(class="flex flex-col bg-white justify-center items-center")
+            div(class="py-10")
+                a(href="/" class="flex flex-col items-center justify-center")
+                    img(class="w-12 h-12" src="/images/logo.svg")
+                    span(class="mt-2 shrink-0 text-xl font-semibold text-gray-800") My Workspace
+            div(class="shrink-0 w-96 p-12 text-left border border-gray-300 rounded-lg overflow-hidden")
+                form(action="api/user/login" method="post")
+                    div
+                        h1(class="text-2xl font-semibold") Log in
+                    div
+                        div(class="flex flex-col")
+                            div(class="flex justify-between items-end pt-6")
+                                label(for="email") Email
+                                span Need an account?
+                                    a(href="/register" class="ml-2 text-blue-500 hover:text-blue-600") Sign up
+                            div
+                                input(name="email" type="text" class="w-full rounded text-sm font-medium text-gray-900 p-3 border border-gray-200 focus:outline-solid focus:outline-cyan-500 focus:outline-offset-1")
                         div 
-                            input(type="text" class="w-full rounded text-md font-medium text-gray-900 p-3 border border-gray-200 focus:outline-solid focus:outline-cyan-500 focus:outline-offset-2")
-            div
-                div 
-                    button(class="mt-10 px-3 py-4 w-full text-md text-white rounded-full bg-blue-500 hover:bg-blue-600")
-                        span Log in
-                div(class="mt-2 text-center")
-                    a(href="#" class="text-blue-500 hover:text-blue-600") Forgot password?
+                            div(class="flex justify-between items-end pt-6")
+                                label(for="password") Password
+                            div 
+                                input(name="password" type="password" class="w-full rounded text-sm font-medium text-gray-900 p-3 border border-gray-200 focus:outline-solid focus:outline-cyan-500 focus:outline-offset-1")
+                    div
+                        div 
+                            button(type="submit" class="mt-10 px-3 py-4 w-full text-sm text-white rounded-full bg-blue-500 hover:bg-blue-600")
+                                span Log in
+                        div(class="mt-2 text-center")
+                            a(href="#" class="text-blue-500 hover:text-blue-600") Forgot password?

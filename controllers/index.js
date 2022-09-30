@@ -16,12 +16,22 @@ const boardUserView = (req, res) => {
     })
 }
 
-const boardAPIs = (req, res) => {
-    console.log(req.params)
+const indexView = (req, res) => {
+    res.render("index");
+}
+
+const registerView = (req, res, next) => {
+    res.render("register");
+}
+
+const loginView = (req, res, next) => {
+    res.render("login");
 }
 
 module.exports = {
+    indexView,
+    loginView,
+    registerView,
     boardView,
     boardUserView,
-    boardAPIs
 };

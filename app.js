@@ -5,12 +5,8 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var session = require('express-session');
-const MongoStore = require('connect-mongo');
-const passport = require('passport');
-
 var indexRouter = require('./routes/index');
-var boardRouter = require('./routes/board');
-var apiRouter = require('./routes/api');
+var apiUserRouter = require('./routes/user');
 
 const livereload = require("livereload");
 const liveReloadServer = livereload.createServer();
@@ -27,10 +23,7 @@ var sess = {
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: {},
-  // store: MongoStore.create({
-  //   mongoUrl: 'mongodb://docker:mongopw@localhost:49156'
-  // })
+  cookie: {}
 }
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
@@ -41,19 +34,15 @@ if (app.get('env') === 'production') {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
 app.use(logger(':method :url :status :res[content-length] - :response-time ms'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(sess))
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(connectLivereload());
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/', indexRouter);
-app.use('/board', boardRouter);
-app.use('/api', apiRouter);
+app.use('/api/user', apiUserRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

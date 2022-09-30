@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const passport = require('passport');
-const { registerView, loginView } = require('../controllers/loginController');
-const { indexView } = require('../controllers/indexController');
-
+const view = require('../controllers/index');
 
 /* GET home page. */
-router.get('/', indexView);
-router.get('/register', registerView);
-router.get('/login', loginView);
+router.get('/', view.indexView);
+router.get('/login', view.loginView);
+router.get('/register', view.registerView);
+router.get('/board', view.boardView);
+router.get('/board/:userId/:boardName', view.boardUserView);
 module.exports = router;
